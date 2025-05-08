@@ -2,7 +2,7 @@ import Payment from '../Modals/paymet.js';
 import Member from '../Modals/member.js';
 import Stripe from 'stripe';
 
-const stripe = new Stripe('sk_test_51RLkPGQewoVc3PzjXkXCYTdkvUjjr8m3SMN0IRNo6xgVqJtfRnRPbeMN9jK8DHdTw3NNsvM4z8SQYz1dRuxjKbLX00q9yIjQHN');
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const createPayment = async (req, res) => {
     try {

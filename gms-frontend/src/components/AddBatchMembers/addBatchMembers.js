@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react"
 import axios from 'axios';
-import StripePayment from '../Payment/StripePayment';
 import { useNavigate } from 'react-router-dom';
 
 import Stack from '@mui/material/Stack';
@@ -98,43 +97,43 @@ const AddBatchMembers = () => {
                 return;
             }
 
-            // Create temporary member data
-            const memberData = {
-                name: inputField.name,
-                mobileNo: inputField.mobileNo,
-                address: inputField.address,
-                joiningDate: inputField.joiningDate,
-                profilePic: inputField.profilePic,
-                batch: inputField.batch
+            // Create member data
+            const requestPayload = {
+                batchId: inputField.batch,
+                members: [{
+                    name: inputField.name,
+                    mobileNo: inputField.mobileNo,
+                    address: inputField.address,
+                    joiningDate: inputField.joiningDate,
+                    profilePic: inputField.profilePic
+                }]
             };
 
-            // Store member data in session storage
-            sessionStorage.setItem('pendingMember', JSON.stringify({
-                memberData,
-                batchId: batch._id,
-                batchName: batch.name,
-                price: batch.price
-            }));
+            // Add member to batch directly
+            const response = await axios.post(
+                'http://localhost:4000/batches/add-members-to-batch',
+                requestPayload,
+                { withCredentials: true }
+            );
 
-            // Navigate to payment with structured data
-            navigate('/payment', {
-                state: {
-                    amount: batch.price,
-                    type: 'batch_membership',
-                    description: `Batch Membership: ${batch.name}`,
-                    currency: 'inr',
-                    batchId: batch._id,
-                    metadata: {
-                        batchName: batch.name,
-                        memberName: inputField.name,
-                        mobileNo: inputField.mobileNo
-                    }
-                }
-            });
+            if (response.data) {
+                toast.success("Member added to batch successfully");
+                // Reset form
+                setInputField({
+                    name: "",
+                    mobileNo: "",
+                    address: "",
+                    joiningDate: "",
+                    batch: selectedOption,
+                    profilePic: "https://th.bing.com/th/id/OIP.gj6t3grz5no6UZ03uIluiwHaHa?rs=1&pid=ImgDetMain"
+                });
+                // Navigate to batch members list
+                navigate(`/batch/${inputField.batch}`);
+            }
 
         } catch (err) {
-            console.log(err);
-            toast.error(err.response?.data?.error || "Payment initialization failed");
+            console.error('Registration Error:', err);
+            toast.error(err.response?.data?.error || "Failed to add member to batch");
         }
     };
       

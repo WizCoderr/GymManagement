@@ -4,6 +4,14 @@ import { useNavigate,useParams} from "react-router-dom";
 import Switch from 'react-switch'
 import axios from "axios";
 import { ToastContainer,toast } from "react-toastify";
+
+
+// Add this helper function at the top of your component
+const formatDate = (date) => {
+    if (!date) return "Not Set";
+    return date.slice(0, 10).split('-').reverse().join('-');
+};
+
 const MemberDetail = () => {
     const [status,setStatus] = useState("Pending");
     const [renew,setRenew] = useState(false);
@@ -95,9 +103,15 @@ const MemberDetail = () => {
                     <div className="mt-1 mb-2 text-2xl font-semibold">Name : {data?.name}</div>
                     <div className="mt-1 mb-2 text-2xl font-semibold">Mobile : {data?.mobileNo}</div>
                     <div className="mt-1 mb-2 text-2xl font-semibold">Address : {data?.address}</div>
-                    <div className="mt-1 mb-2 text-2xl font-semibold">Joined Date :{data?.createdAt.slice(0,10).split('-').reverse().join('-')} </div>
-                    <div className="mt-1 mb-2 text-2xl font-semibold">Next Bill Date : {data?.nextBillDate.slice(0,10).split('-').reverse().join('-')}</div>
-                    <div className="mt-1 mb-2 flex gap-4 text-2xl font-semibold">Status : <Switch onColor='#6366F1' checked={status==="Active"} onChange={()=>{handleSwitchBtn()}}/> </div>
+                    <div className="mt-1 mb-2 text-2xl font-semibold">
+                        Joined Date: {data?.createdAt ? formatDate(data.createdAt) : "Not Set"}
+                    </div>
+                    <div className="mt-1 mb-2 text-2xl font-semibold">
+                        Next Bill Date: {data?.nextBillDate ? formatDate(data.nextBillDate) : "Not Set"}
+                    </div>
+                    <div className="mt-1 mb-2 flex gap-4 text-2xl font-semibold">
+                        Status: <Switch onColor='#6366F1' checked={status==="Active"} onChange={handleSwitchBtn}/>
+                    </div>
                    {isDateInPast(data?.nextBillDate) && <div onClick={()=>{setRenew(prev => !prev)}} className={`mt-1 rounded-lg p-3 border-2 border-slate-900 text-center ${renew && status==="Active"?'bg-gradient-to-r from-indigo-500 to-pink-500 text-white':null} w-full md:w-1/2 cursor-pointer hover:text-white hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500`}>Renew</div>}
 
                     {
@@ -139,4 +153,3 @@ const MemberDetail = () => {
 }
 
 export default MemberDetail;
-                        

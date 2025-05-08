@@ -7,7 +7,6 @@ import './DBConn/conn.js';
 import gymRoutes from './Routes/gym.js';
 import membershipRoutes from './Routes/membership.js';
 import memberRoutes from './Routes/member.js';
-import paymentRoutes from './Routes/payment.js';
 import batchRoutes from './Routes/batch.js';
 dotenv.config();
 const app = express();
@@ -23,7 +22,6 @@ app.use(express.json());
 app.use('/auth', gymRoutes);
 app.use('/plans', membershipRoutes);
 app.use('/members', memberRoutes);
-app.use('/payments', paymentRoutes);
 app.use('/batches', batchRoutes);
 
 const PORT = process.env.PORT || 4000;

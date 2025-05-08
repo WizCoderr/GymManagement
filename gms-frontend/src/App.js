@@ -10,9 +10,6 @@ import GeneralUser from './pages/GeneralUser/generalUser';
 import MemberDetail from './pages/MemberDetail/memberDetail';
 import Batch from './pages/batch/batch';
 import BatchMembers from './components/BatchMembers/BatchMember';
-import PaymentSuccess from './pages/Payment/PaymentSuccess';
-import PaymentCancel from './pages/Payment/PaymentCancel';
-import StripePayment from './components/Payment/StripePayment';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
@@ -44,9 +41,6 @@ function App() {
         <Route path='/member/:id' element={<MemberDetail/>} />
         <Route path='/batch' element={<Batch/>} />
         <Route path='/batch/:id' element={<BatchMembers/>} />
-        <Route path='/payment' element={<StripePayment/>} />
-        <Route path='/payment/success' element={<PaymentSuccess/>} />
-        <Route path='/payment/cancel' element={<PaymentCancel/>} />
       </Routes>
       
    

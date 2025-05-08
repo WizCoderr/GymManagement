@@ -1,6 +1,5 @@
 import React,{useState,useEffect} from "react"
 import axios from 'axios';
-import StripePayment from '../Payment/StripePayment';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer,toast } from "react-toastify";
 
@@ -78,36 +77,30 @@ const Addmembers = () => {
                 return;
             }
 
-            // Store member data in session storage
-            sessionStorage.setItem('pendingMember', JSON.stringify(inputField));
+            // Register member directly
+            const response = await axios.post(
+                'http://localhost:4000/members/register-member',
+                inputField,
+                { withCredentials: true }
+            );
 
-            // Get membership price from your membershipList
-            const selectedMembership = membershipList.find(m => m._id === inputField.membership);
-            
-            if (!selectedMembership) {
-                toast.error("Selected membership not found");
-                return;
+            if (response.data) {
+                toast.success("Member registered successfully");
+                // Reset form
+                setInputField({
+                    name: "", 
+                    mobileNo: "", 
+                    membership: selectedOption, 
+                    profilePic: "https://th.bing.com/th/id/OIP.gj6t3grz5no6UZ03uIluiwHaHa?rs=1&pid=ImgDetMain", 
+                    joiningDate: ""
+                });
+                // Navigate to members list
+                navigate('/member');
             }
 
-            // Navigate to payment with structured data
-            navigate('/payment', {
-                state: {
-                    amount: selectedMembership.price,
-                    type: 'membership',
-                    description: `Gym Membership: ${selectedMembership.name}`,
-                    currency: 'inr',
-                    metadata: {
-                        memberName: inputField.name,
-                        mobileNo: inputField.mobileNo,
-                        membershipId: inputField.membership,
-                        membershipName: selectedMembership.name
-                    }
-                }
-            });
-
         } catch (err) {
-            console.error(err);
-            toast.error("Failed to initiate payment");
+            console.error('Registration Error:', err);
+            toast.error(err.response?.data?.error || "Failed to register member");
         }
       };
       

@@ -92,7 +92,7 @@ export const handlePaymentSuccess = async (req, res) => {
         event = stripe.webhooks.constructEvent(
             req.body,
             sig,
-            'whsec_cBu9JLsCyvKhClAG6MhQzQ3XWhf5kBPr'  // Replace with your webhook secret
+            process.env.STRIPE_WEBHOOK_SECRET
         );
     } catch (err) {
         res.status(400).send(`Webhook Error: ${err.message}`);

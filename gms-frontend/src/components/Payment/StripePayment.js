@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 import { toast } from 'react-toastify';
 
-const stripePromise = loadStripe('pk_test_51RLkPGQewoVc3PzjZWCtow2VaH7rJj9SVoiQXajish5JeMsR2zhMxQg2RA96bTJTz3bUqHOVqAV2pW5gQRpnoK0V00YvwKozhN');
+const stripePromise = loadStripe(process.env.STRIPE_PUBLISHER_KEY);
 
 const StripePayment = () => {
     const location = useLocation();

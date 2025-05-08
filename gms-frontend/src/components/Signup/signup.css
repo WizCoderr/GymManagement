@@ -1,0 +1,13 @@
+
+.customSignup::-webkit-scrollbar {
+    width: 4px; /*width of scrollbar */
+}
+.customSignup::-webkit-scrollbar-thumb {
+   background-color: rgba(0,0,0,0.5); /*color of the scrollbar thumb*/
+   border-radius: 8px; /* Roundness of scrollbar thumv */
+}
+
+
+.customSignup::-webkit-scrollbar-track {
+    background-color: rgba(0,0,0,0.1); /* color of the scrollbar track */
+}
